@@ -1,5 +1,3 @@
 <?php 
-require("../_inc/init.php")
-
-
+require("../_inc/init.php");
 ?>
