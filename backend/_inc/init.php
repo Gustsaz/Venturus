@@ -2,7 +2,22 @@
 
 use bng\System\Database;
 
+// as portas que pode, mudar quando realizar o deploy
+header("Access-Control-Allow-Origin: http://127.0.0.1:5500");
+
+// metodos que pode 
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+
+// headers que pode 
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
+
 header('Content-Type: application/json; charset=UTF-8');
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 require_once('config.php');
 require_once('Database.php');
@@ -22,13 +37,6 @@ if(!API_ACTIVE)
 
 $request_method = $_SERVER['REQUEST_METHOD'];
 
-if(!isset($_SERVER['PHP_AUTH_USER']))
-{
-    $res->set_status('error');
-    $res->set_error_message('Missing the credentials.');
-    $res->response();
-}
-
 $mysql_config = [
     'server' => MYSQL_HOST,
     'dbname' => MYSQL_DBNAME,
@@ -37,25 +45,3 @@ $mysql_config = [
 ];
 
 $db = new Database($mysql_config);
-
-$user = $_SERVER['PHP_AUTH_USER'];
-$pass = $_SERVER['PHP_AUTH_PW'];
-
-$params = [
-    ':user' => $user
-];
-
-$results = $db->execute_query('SELECT * FROM users WHERE name = :user', $params);
-if($results->affected_rows == 0 )
-{
-    $res->set_status('error');
-    $res->set_error_message('The system didn´t find any users with this username.');
-    $res->response();
-}
-
-if($pass !== $results->results[0]->passwrd)
-{
-    $res->set_status('error');
-    $res->set_error_message("This password is incorrect");
-    $res->response();
-}

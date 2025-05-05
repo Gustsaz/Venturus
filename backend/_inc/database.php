@@ -61,12 +61,12 @@ class Database {
         } catch(PDOException $err) {
 
             $connection = null;
-            return $this->_result('erro', $err->getMessage(), $sql, null, 0, null);
+            return $this->_result('error', $err->getMessage(), $sql, null, 0, null);
 
         }
 
         $connection = null;
-        return $this->_result('Sucesso', 'Sucesso', $sql, $results, $query->rowCount(), null );
+        return $this->_result('success', 'success', $sql, $results, $query->rowCount(), null );
 
     }
 
@@ -87,12 +87,12 @@ class Database {
             $connection->rollBack();
 
             $connection = null;
-            return $this->_result('Erro', $err->getMessage(), $sql, null, 0, null);
+            return $this->_result('Error', $err->getMessage(), $sql, null, 0, null);
 
         }
 
         $connection = null;
-        return $this->_result('Sucesso', 'Sucesso', $sql, null, $query->rowCount(), $ultimo_id);
+        return $this->_result('success', 'success', $sql, null, $query->rowCount(), $ultimo_id);
 
     }
 

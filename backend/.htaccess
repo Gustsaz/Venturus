@@ -1,0 +1,10 @@
+Options -Indexes
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#api
+RewriteRule ^([a-zA-Z0-9_-]+)$ public/routes/$1.php [L,NC,QSA]
+
+
+ErrorDocument 404 /public/routes/404.php
